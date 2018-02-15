@@ -16,6 +16,8 @@ namespace WUIV2.Models
 
         public float description { get; set; }
 
+        public virtual List<Animal> animals { get; set; }
+
         public TypeAnimal()
         {
 

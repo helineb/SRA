@@ -168,10 +168,20 @@
     <Compile Include="Migrations\201802151331475_Second.Designer.cs">
       <DependentUpon>201802151331475_Second.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802151425558_BDD_Install.cs" />
+    <Compile Include="Migrations\201802151425558_BDD_Install.Designer.cs">
+      <DependentUpon>201802151425558_BDD_Install.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Animal.cs" />
     <Compile Include="Models\AnimalContext.cs" />
+    <Compile Include="Models\AvisDeRecherche.cs" />
+    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\Signalement.cs" />
     <Compile Include="Models\TypeAnimal.cs" />
     <Compile Include="Models\Emplacement.cs" />
+    <Compile Include="Models\Utilisateur.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802151331475_Second.resx">
       <DependentUpon>201802151331475_Second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802151425558_BDD_Install.resx">
+      <DependentUpon>201802151425558_BDD_Install.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

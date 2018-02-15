@@ -16,7 +16,12 @@ namespace WUIV2.Models
 
         public DbSet<Emplacement> Emplacements { get; set; }
         public DbSet<TypeAnimal> TypeAnimals { get; set; }
-        
+        public DbSet<Animal> Animals { get; set; }
+        public DbSet<AvisDeRecherche> AvisDeRecherches { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Signalement> Signalements { get; set; }
+        public DbSet<Utilisateur> Utilisateurs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
