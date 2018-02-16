@@ -10,9 +10,11 @@ namespace WUIV2.Models
     {
         [Key]
         public int id { get; set; }
+        [Display(Name = "Email")]
         public String mail { get; set; }
+        [Display(Name = "Mot de passe")]
         public String mdp { get; set; }
-        public Role role { get; set; }
+        public String role { get; set; }
         public virtual List<Message> messages { get; set; }
 
         public Utilisateur()

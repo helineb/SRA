@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WUIV2.Models;
 
 namespace WUIV2.Controllers
@@ -123,5 +124,38 @@ namespace WUIV2.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(String mail,String mdp)
+        {
+            Utilisateur AuthenticatedUser = db.Utilisateurs.FirstOrDefault(u => u.mail == mail && u.mdp == mdp);
+            
+            try
+            {
+                int id = AuthenticatedUser.id;
+                FormsAuthentication.SetAuthCookie(AuthenticatedUser.id.ToString(), false);
+                return RedirectToAction("Details", new { id = id });
+            }
+            catch(NullReferenceException e)
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+        public ActionResult Deconnect()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+        
     }
 }
