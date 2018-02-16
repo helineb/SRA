@@ -8,19 +8,23 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using WUIV2.Models;
+using WUIV2.Models.DAL;
 
 namespace WUIV2.Controllers
 {
     public class UtilisateursController : Controller
     {
+
         private AnimalContext db = new AnimalContext();
 
         // GET: Utilisateurs
+        [Authorize]
         public ActionResult Index()
         {
-            return View(db.Utilisateurs.ToList());
+            return View(UtilisateurDAL.getAll());
         }
 
+        [Authorize]
         // GET: Utilisateurs/Details/5
         public ActionResult Details(int? id)
         {
@@ -28,7 +32,7 @@ namespace WUIV2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Utilisateur utilisateur = db.Utilisateurs.Find(id);
+            Utilisateur utilisateur = UtilisateurDAL.getById((int)id);
             if (utilisateur == null)
             {
                 return HttpNotFound();
@@ -51,8 +55,7 @@ namespace WUIV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Utilisateurs.Add(utilisateur);
-                db.SaveChanges();
+                Utilisateur u = UtilisateurDAL.create(utilisateur);
                 return RedirectToAction("Index");
             }
 
@@ -60,13 +63,14 @@ namespace WUIV2.Controllers
         }
 
         // GET: Utilisateurs/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Utilisateur utilisateur = db.Utilisateurs.Find(id);
+            Utilisateur utilisateur = UtilisateurDAL.getById((int)id);
             if (utilisateur == null)
             {
                 return HttpNotFound();
@@ -79,25 +83,26 @@ namespace WUIV2.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "id,mail,mdp,role")] Utilisateur utilisateur)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(utilisateur).State = EntityState.Modified;
-                db.SaveChanges();
+                Utilisateur u = UtilisateurDAL.update(utilisateur);
                 return RedirectToAction("Index");
             }
             return View(utilisateur);
         }
 
         // GET: Utilisateurs/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Utilisateur utilisateur = db.Utilisateurs.Find(id);
+            Utilisateur utilisateur = UtilisateurDAL.getById((int)id);
             if (utilisateur == null)
             {
                 return HttpNotFound();
@@ -108,11 +113,10 @@ namespace WUIV2.Controllers
         // POST: Utilisateurs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
-            Utilisateur utilisateur = db.Utilisateurs.Find(id);
-            db.Utilisateurs.Remove(utilisateur);
-            db.SaveChanges();
+            UtilisateurDAL.delete(id);
             return RedirectToAction("Index");
         }
 
@@ -120,7 +124,7 @@ namespace WUIV2.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                UtilisateurDAL.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -137,7 +141,7 @@ namespace WUIV2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(String mail,String mdp)
         {
-            Utilisateur AuthenticatedUser = db.Utilisateurs.FirstOrDefault(u => u.mail == mail && u.mdp == mdp);
+            Utilisateur AuthenticatedUser = UtilisateurDAL.authenticate(mail, mdp);
             
             try
             {
@@ -151,7 +155,8 @@ namespace WUIV2.Controllers
             }
         }
 
-        public ActionResult Deconnect()
+        [Authorize]
+        public ActionResult Disconnect()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");

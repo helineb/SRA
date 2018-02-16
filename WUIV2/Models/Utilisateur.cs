@@ -21,5 +21,29 @@ namespace WUIV2.Models
         {
 
         }
+
+        public bool IsAdministrateur()
+        {
+            if(this.role == "ADMINISTRATEUR")
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
+        public bool IsMembre()
+        {
+            if (this.role == "MEMBRE")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
