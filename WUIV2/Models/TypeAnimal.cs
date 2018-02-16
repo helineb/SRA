@@ -12,9 +12,9 @@ namespace WUIV2.Models
         [Key]
         public int Id { get; set; }
 
-        public float libelle { get; set; }
+        public String libelle { get; set; }
 
-        public float description { get; set; }
+        public String description { get; set; }
 
         public virtual List<Animal> animals { get; set; }
 

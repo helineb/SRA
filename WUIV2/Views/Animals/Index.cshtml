@@ -1,0 +1,81 @@
+﻿@model IEnumerable<WUIV2.Models.Animal>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Créer", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.proprietaire.mail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.typeAnimal.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tatouage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.puce)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.vaccin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.castre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.proprietaire.mail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.typeAnimal.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tatouage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.puce)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.vaccin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.castre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
