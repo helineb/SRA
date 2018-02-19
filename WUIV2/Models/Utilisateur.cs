@@ -14,6 +14,7 @@ namespace WUIV2.Models
         public String mail { get; set; }
         [Display(Name = "Mot de passe")]
         public String mdp { get; set; }
+        [Display(Name = "Rôle")]
         public String role { get; set; }
         public virtual List<Message> messages { get; set; }
 
