@@ -15,8 +15,6 @@ namespace WUIV2.Controllers
     public class UtilisateursController : Controller
     {
 
-        private AnimalContext db = new AnimalContext();
-
         // GET: Utilisateurs
         [Authorize]
         public ActionResult Index()
