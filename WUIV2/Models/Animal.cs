@@ -14,6 +14,7 @@ namespace WUIV2.Models
         [Display(Name = "Nom")]
         public String nom { get; set; }
 
+        [Display(Name = "Propriétaire")]
         public int? proprietaireId { get; set; }
 
         public virtual Utilisateur proprietaire { get; set; }

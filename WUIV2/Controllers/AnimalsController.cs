@@ -40,7 +40,7 @@ namespace WUIV2.Controllers
         public ActionResult Create()
         {
             ViewBag.proprietaireId = new SelectList(db.Utilisateurs, "id", "mail");
-            ViewBag.typeAnimalId = new SelectList(db.TypeAnimals, "Id", "Id");
+            ViewBag.typeAnimal = new SelectList(db.TypeAnimals, "Id", "Libelle");
             return View();
         }
 
@@ -49,7 +49,7 @@ namespace WUIV2.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,nom,proprietaireId,description,age,tatouage,puce,vaccin,castre,typeAnimalId")] Animal animal)
+        public ActionResult Create([Bind(Include = "id,nom,proprietaireId,description,age,tatouage,puce,vaccin,castre,typeAnimal")] Animal animal)
         {
             if (ModelState.IsValid)
             {
