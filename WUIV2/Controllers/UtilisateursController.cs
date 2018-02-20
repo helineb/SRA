@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -16,13 +17,13 @@ namespace WUIV2.Controllers
     {
 
         // GET: Utilisateurs
-        [Authorize]
+        [Authorize(Roles= "ADMINISTRATEUR")]
         public ActionResult Index()
         {
-            return View(UtilisateurDAL.getAll());
+            return View(UtilisateurDAL.getInstance().getAll());
         }
 
-        [Authorize]
+        [Authorize(Roles= "MEMBRE")]
         // GET: Utilisateurs/Details/5
         public ActionResult Details(int? id)
         {
@@ -30,7 +31,7 @@ namespace WUIV2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Utilisateur utilisateur = UtilisateurDAL.getById((int)id);
+            Utilisateur utilisateur = UtilisateurDAL.getInstance().getById((int)id);
             if (utilisateur == null)
             {
                 return HttpNotFound();
@@ -53,7 +54,7 @@ namespace WUIV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                Utilisateur u = UtilisateurDAL.create(utilisateur);
+                Utilisateur u = UtilisateurDAL.getInstance().create(utilisateur);
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +69,7 @@ namespace WUIV2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Utilisateur utilisateur = UtilisateurDAL.getById((int)id);
+            Utilisateur utilisateur = UtilisateurDAL.getInstance().getById((int)id);
             if (utilisateur == null)
             {
                 return HttpNotFound();
@@ -86,7 +87,7 @@ namespace WUIV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                Utilisateur u = UtilisateurDAL.update(utilisateur);
+                Utilisateur u = UtilisateurDAL.getInstance().update(utilisateur);
                 return RedirectToAction("Index");
             }
             return View(utilisateur);
@@ -100,7 +101,7 @@ namespace WUIV2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Utilisateur utilisateur = UtilisateurDAL.getById((int)id);
+            Utilisateur utilisateur = UtilisateurDAL.getInstance().getById((int)id);
             if (utilisateur == null)
             {
                 return HttpNotFound();
@@ -114,7 +115,7 @@ namespace WUIV2.Controllers
         [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
-            UtilisateurDAL.delete(id);
+            UtilisateurDAL.getInstance().delete(id);
             return RedirectToAction("Index");
         }
 
@@ -122,7 +123,7 @@ namespace WUIV2.Controllers
         {
             if (disposing)
             {
-                UtilisateurDAL.Dispose();
+                UtilisateurDAL.getInstance().Dispose();
             }
             base.Dispose(disposing);
         }
@@ -137,17 +138,32 @@ namespace WUIV2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(String mail,String mdp)
+        public ActionResult Login(String mail,String mdp, String returnUrl)
         {
-            Utilisateur AuthenticatedUser = UtilisateurDAL.authenticate(mail, mdp);
+            Utilisateur AuthenticatedUser = UtilisateurDAL.getInstance().authenticate(mail, mdp);
             
-            try
+            if(AuthenticatedUser != null)
             {
                 int id = AuthenticatedUser.id;
-                FormsAuthentication.SetAuthCookie(AuthenticatedUser.id.ToString(), false);
-                return RedirectToAction("Details", new { id = id });
+                FormsAuthentication.SetAuthCookie(AuthenticatedUser.mail.ToString(), false);
+
+                var authCookie = HttpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
+                if (authCookie != null)
+                {
+                    string encTicket = authCookie.Value;
+                    if (!String.IsNullOrEmpty(encTicket))
+                    {
+                        var ticket = FormsAuthentication.Decrypt(encTicket);
+                        var user = new UserIdentity(ticket);
+                        var role = Roles.GetRolesForUser(user.Name);
+                        var prin = new GenericPrincipal(user, role);
+                        HttpContext.User = prin;
+                    }
+                }
+               // var userCookie = new GenericPrincipal(, role);
+                return Redirect(returnUrl);
             }
-            catch(NullReferenceException e)
+            else
             {
                 return RedirectToAction("Login");
             }
