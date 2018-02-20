@@ -22,12 +22,22 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Accueil", "Index", "AvisDeRecherches")</li>
-                    <!--if(HttpContext.User.Identity.IsAuthenticated){
+                    @if(User.IsInRole("ADMINISTRATEUR"))
+                    {
                         @Html.Partial("_menuAdministrateur");
                     }
-                    else {
+                    @if (User.IsInRole("MEMBRE"))
+                    {
+                        @Html.Partial("_menuMembre");
+                    }
+                    @if(!User.Identity.IsAuthenticated)
+                    {
                         @Html.Partial("_menuPublique");
-                    }-->
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Se déconnecter", "Disconnect", "Utilisateurs")</li>
+                    }
 
                     <li>@Html.ActionLink("À propos de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>

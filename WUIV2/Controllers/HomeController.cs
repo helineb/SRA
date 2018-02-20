@@ -10,7 +10,7 @@ namespace WUIV2.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index","AvisDeRecherches");
         }
 
         public ActionResult About()

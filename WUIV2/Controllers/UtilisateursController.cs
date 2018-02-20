@@ -23,7 +23,7 @@ namespace WUIV2.Controllers
             return View(UtilisateurDAL.getInstance().getAll());
         }
 
-        [Authorize(Roles= "MEMBRE")]
+        [Authorize]
         // GET: Utilisateurs/Details/5
         public ActionResult Details(int? id)
         {
@@ -146,7 +146,7 @@ namespace WUIV2.Controllers
             {
                 int id = AuthenticatedUser.id;
                 FormsAuthentication.SetAuthCookie(AuthenticatedUser.mail.ToString(), false);
-
+                
                 var authCookie = HttpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
                 if (authCookie != null)
                 {
@@ -160,8 +160,15 @@ namespace WUIV2.Controllers
                         HttpContext.User = prin;
                     }
                 }
-               // var userCookie = new GenericPrincipal(, role);
-                return Redirect(returnUrl);
+
+               if(String.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction("Index", "AvisDeRecherches");
+                }
+                else
+                {
+                    return Redirect(returnUrl);
+                }
             }
             else
             {
@@ -173,7 +180,7 @@ namespace WUIV2.Controllers
         public ActionResult Disconnect()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "AvisDeRecherches");
         }
         
     }
