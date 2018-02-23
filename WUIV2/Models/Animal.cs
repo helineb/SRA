@@ -11,7 +11,7 @@ namespace WUIV2.Models
         [Key]
         public int id { get; set; }
 
-        [Display(Name = "Nom")]
+        [Display(Name = "Nom de l'animal")]
         public String nom { get; set; }
 
         [Display(Name = "Propriétaire")]

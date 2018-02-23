@@ -18,6 +18,8 @@ namespace WUIV2.Models
         public virtual Animal animal { get; set; }
         public virtual Emplacement emplacement { get; set; }
 
+        public List<Signalement> signalements { get; set; }
+
         public AvisDeRecherche()
         {
 

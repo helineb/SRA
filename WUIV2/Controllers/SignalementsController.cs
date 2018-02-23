@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WUIV2.Models;
+using WUIV2.Models.DAL;
 
 namespace WUIV2.Controllers
 {
@@ -36,9 +37,17 @@ namespace WUIV2.Controllers
         }
 
         // GET: Signalements/Create
-        public ActionResult Create()
+        public ActionResult Create(int? avisDeRechercheId)
         {
-            return View();
+            Signalement s = new Signalement();
+            var adr = AvisDeRechercheDAL.getInstance().getById((int)avisDeRechercheId);
+            if(adr == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            s.avisDeRecherche = adr;
+            return View(s);
         }
 
         // POST: Signalements/Create
@@ -46,10 +55,15 @@ namespace WUIV2.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,commentaire")] Signalement signalement)
+        public ActionResult Create([Bind(Include = "id,dateSignalement,commentaire,adresse,ville,avisDeRecherche_id")] Signalement signalement)
         {
             if (ModelState.IsValid)
             {
+                if (User.Identity.IsAuthenticated)
+                {
+                    signalement.utilisateur = UtilisateurDAL.getInstance().getByMail(User.Identity.Name);
+                }
+
                 db.Signalements.Add(signalement);
                 db.SaveChanges();
                 return RedirectToAction("Index");

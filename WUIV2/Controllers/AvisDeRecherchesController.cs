@@ -38,7 +38,7 @@ namespace WUIV2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AvisDeRecherche avisDeRecherche = db.AvisDeRecherches.Find(id);
+            AvisDeRecherche avisDeRecherche = AvisDeRechercheDAL.getInstance().getById((int)id);
             if (avisDeRecherche == null)
             {
                 return HttpNotFound();

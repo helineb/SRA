@@ -46,7 +46,11 @@ namespace WUIV2.Models.DAL
         //getById
         public AvisDeRecherche getById(int id)
         {
-            return db.AvisDeRecherches.Find(id) ;
+            AvisDeRecherche adr = db.AvisDeRecherches.Find(id);
+            string query = "SELECT * FROM Signalement WHERE avisDeRecherche_id = @p0";
+            adr.signalements = db.Signalements.SqlQuery(query,id).ToList();
+
+            return adr ;
         }
 
         //getMine

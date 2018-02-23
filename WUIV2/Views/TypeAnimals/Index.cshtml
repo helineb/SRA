@@ -1,18 +1,21 @@
 ﻿@model IEnumerable<WUIV2.Models.TypeAnimal>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Ajouter";
 }
 
-<h2>Index</h2>
+<h2>Ajouter</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Ajouter", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.libelle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.description)
@@ -29,9 +32,9 @@
             @Html.DisplayFor(modelItem => item.description)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Modifier", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Détails", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Supprimer", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

@@ -34,14 +34,14 @@
                     @if(!User.Identity.IsAuthenticated)
                     {
                         @Html.Partial("_menuPublique");
+                        <li>@Html.ActionLink("À propos de", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     }
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("Se déconnecter", "Disconnect", "Utilisateurs")</li>
                     }
 
-                    <li>@Html.ActionLink("À propos de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
             </div>
         </div>

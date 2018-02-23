@@ -1,21 +1,18 @@
 ﻿@model IEnumerable<WUIV2.Models.Utilisateur>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Liste des utilisateurs";
 }
 
-<h2>Index</h2>
+<h2>Liste des utilisateurs</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Ajouter un utilisateur", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.mail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.mdp)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.role)
@@ -29,15 +26,12 @@
             @Html.DisplayFor(modelItem => item.mail)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.mdp)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.role)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Modifier", "Edit", new { id=item.id }) |
             @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Supprimer", "Delete", new { id=item.id })
         </td>
     </tr>
 }
