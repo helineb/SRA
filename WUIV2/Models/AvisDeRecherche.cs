@@ -13,7 +13,7 @@ namespace WUIV2.Models
         public String titre { get; set; }
         public virtual Utilisateur membre { get; set; }
 
-        [DataType()]
+        [DataType(DataType.MultilineText)]
         public String description { get; set; }
         public virtual Animal animal { get; set; }
         public virtual Emplacement emplacement { get; set; }
