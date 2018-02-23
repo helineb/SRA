@@ -48,6 +48,11 @@ namespace WUIV2.Models.DAL
         {
             return db.Utilisateurs.Find(id) ;
         }
+        //getById
+        public Utilisateur getByMail(string mail)
+        {
+            return db.Utilisateurs.FirstOrDefault(u => u.mail == mail);
+        }
 
         //authentified
         public Utilisateur authenticate(string mail, string mdp)

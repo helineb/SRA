@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WUIV2.Models;
+using WUIV2.Models.DAL;
+using WUIV2.Models.ViewModel;
 
 namespace WUIV2.Controllers
 {
@@ -17,7 +19,16 @@ namespace WUIV2.Controllers
         // GET: AvisDeRecherches
         public ActionResult Index()
         {
+            ViewBag.Title = "Les avis de recherche";
             return View(db.AvisDeRecherches.ToList());
+        }
+
+        // GET: AvisDeRecherches
+        [Authorize(Roles = "MEMBRE")]
+        public ActionResult Mine()
+        {
+            ViewBag.Title = "Mes avis de recherche";
+            return View("Index",AvisDeRechercheDAL.getInstance().getMine(User.Identity.Name));
         }
 
         // GET: AvisDeRecherches/Details/5
@@ -36,9 +47,13 @@ namespace WUIV2.Controllers
         }
 
         // GET: AvisDeRecherches/Create
+        [Authorize(Roles = "MEMBRE")]
         public ActionResult Create()
         {
-            return View();
+            var adrViewModel = new VMAvisDeRecherche();
+            ViewBag.animal = new SelectList(db.Animals, "Id", "Nom");
+
+            return View(adrViewModel);
         }
 
         // POST: AvisDeRecherches/Create
@@ -46,19 +61,24 @@ namespace WUIV2.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,titre,description")] AvisDeRecherche avisDeRecherche)
+        [Authorize(Roles = "MEMBRE")]
+        public ActionResult Create(VMAvisDeRecherche VMadr)
         {
             if (ModelState.IsValid)
             {
-                db.AvisDeRecherches.Add(avisDeRecherche);
+                Utilisateur userConnected = UtilisateurDAL.getInstance().getByMail(User.Identity.Name);
+                VMadr.avisDeRecherche.membre = userConnected;
+
+                db.AvisDeRecherches.Add(VMadr.avisDeRecherche);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(avisDeRecherche);
+            return View(VMadr);
         }
 
         // GET: AvisDeRecherches/Edit/5
+        [Authorize(Roles = "MEMBRE")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -66,11 +86,16 @@ namespace WUIV2.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AvisDeRecherche avisDeRecherche = db.AvisDeRecherches.Find(id);
+
             if (avisDeRecherche == null)
             {
                 return HttpNotFound();
             }
-            return View(avisDeRecherche);
+
+            var adrViewModel = new VMAvisDeRecherche();
+            adrViewModel.avisDeRecherche = avisDeRecherche;
+            ViewBag.animal = new SelectList(db.Animals, "Id", "Nom");
+            return View(adrViewModel);
         }
 
         // POST: AvisDeRecherches/Edit/5
@@ -78,18 +103,20 @@ namespace WUIV2.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,titre,description")] AvisDeRecherche avisDeRecherche)
+        [Authorize(Roles = "MEMBRE")]
+        public ActionResult Edit(VMAvisDeRecherche VMadr)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(avisDeRecherche).State = EntityState.Modified;
+                db.Entry(VMadr.avisDeRecherche).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(avisDeRecherche);
+            return View(VMadr);
         }
 
         // GET: AvisDeRecherches/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -107,6 +134,7 @@ namespace WUIV2.Controllers
         // POST: AvisDeRecherches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             AvisDeRecherche avisDeRecherche = db.AvisDeRecherches.Find(id);

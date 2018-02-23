@@ -1,11 +1,10 @@
-﻿@model WUIV2.Models.AvisDeRecherche
+﻿@model WUIV2.Models.ViewModel.VMAvisDeRecherche
 
 @{
     ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
-
 
 @using (Html.BeginForm())
 {
@@ -15,21 +14,32 @@
         <h4>AvisDeRecherche</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.avisDeRecherche.id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.titre, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.avisDeRecherche.titre, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.titre, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.titre, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.avisDeRecherche.titre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.avisDeRecherche.titre, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.avisDeRecherche.description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.avisDeRecherche.description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.avisDeRecherche.description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.avisDeRecherche.animal, "Animal", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("animal", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.avisDeRecherche.animal.nom, "", new { @class = "text-danger" })
+                <p>
+                    @Html.ActionLink("Créer d'abord un animal", "Create", "Animals")
+                </p>
             </div>
         </div>
 
@@ -42,9 +52,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Revenir à la liste", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using WUIV2.Models;
 using WUIV2.Models.DAL;
+using WUIV2.Models.ViewModel;
 
 namespace WUIV2.Controllers
 {
@@ -37,6 +38,19 @@ namespace WUIV2.Controllers
                 return HttpNotFound();
             }
             return View(utilisateur);
+        }
+
+        [Authorize]
+        // GET: Utilisateurs/Details/mail
+        public ActionResult Mine()
+        {
+            String mail = User.Identity.Name;
+            Utilisateur utilisateur = UtilisateurDAL.getInstance().getByMail(mail);
+            if (utilisateur == null)
+            {
+                return HttpNotFound();
+            }
+            return View("details",utilisateur);
         }
 
         // GET: Utilisateurs/Create
@@ -74,23 +88,27 @@ namespace WUIV2.Controllers
             {
                 return HttpNotFound();
             }
-            return View(utilisateur);
+
+            var VMUser = new VMUtilisateurPassword(utilisateur);
+
+            return View(VMUser);
         }
 
         // POST: Utilisateurs/Edit/5
         // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public ActionResult Edit([Bind(Include = "id,mail,mdp,role")] Utilisateur utilisateur)
+        public ActionResult Edit(VMUtilisateurPassword VMUser)
         {
             if (ModelState.IsValid)
             {
-                Utilisateur u = UtilisateurDAL.getInstance().update(utilisateur);
+                VMUser.utilisateur.mdp = VMUser.Password;
+                Utilisateur u = UtilisateurDAL.getInstance().update(VMUser.utilisateur);
                 return RedirectToAction("Index");
             }
-            return View(utilisateur);
+            return View(VMUser);
         }
 
         // GET: Utilisateurs/Delete/5

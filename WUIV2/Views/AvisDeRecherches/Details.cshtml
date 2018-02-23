@@ -26,9 +26,16 @@
             @Html.DisplayFor(model => model.description)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.animal.nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.animal.nom)
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Modifier", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Revenir à la liste", "Index")
 </p>

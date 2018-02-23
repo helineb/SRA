@@ -19,14 +19,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.mdp)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.mdp)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.role)
         </dt>
 
@@ -37,6 +29,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Modifier son mot de passe", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Revenir à la liste", "Index")
 </p>
